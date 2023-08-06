@@ -6,7 +6,9 @@
       "package": "SerkinSolutions Surveys",
       "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
-      "versionDescription": ""
+      "versionDescription": "Survey collection in Salesforce Experience Cloud sites. Manage surveys and review survey responses.",
+      "postInstallUrl": "https://quip.com/qWRhASLwGR05/SerkinSolutions-Surveys",
+      "releaseNotesUrl": "https://quip.com/qWRhASLwGR05/SerkinSolutions-Surveys"
     }
   ],
   "name": "SerkinSolutions Surveys",
@@ -17,6 +19,8 @@
     "SerkinSolutions Surveys": "0HoDn000000bmwoKAA",
     "SerkinSolutions Surveys@0.1.0-1": "04tDn000000B2I0IAK",
     "SerkinSolutions Surveys@0.1.0-2": "04tDn000000B2I5IAK",
-    "SerkinSolutions Surveys@0.1.0-3": "04tDn000000B2IAIA0"
+    "SerkinSolutions Surveys@0.1.0-3": "04tDn000000B2IAIA0",
+    "SerkinSolutions Surveys@0.1.0-4": "04tDn000000B2IFIA0",
+    "SerkinSolutions Surveys@0.1.0-5": "04tDn000000B2IKIA0"
   }
 }

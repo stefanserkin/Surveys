@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Question_Compact_Layout</fullName>
+    <fields>Question__c</fields>
+    <fields>Name</fields>
+    <fields>Survey__c</fields>
+    <fields>Data_Type__c</fields>
+    <fields>Sort_Order__c</fields>
+    <label>Survey Question Compact Layout</label>
+</CompactLayout>
