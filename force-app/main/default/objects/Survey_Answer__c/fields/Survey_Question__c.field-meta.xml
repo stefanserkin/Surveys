@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Question__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The question this answer responded to</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The question this answer responded to</inlineHelpText>
+    <label>Survey Question</label>
+    <referenceTo>Survey_Question__c</referenceTo>
+    <relationshipLabel>Survey Answers</relationshipLabel>
+    <relationshipName>Survey_Answers</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
