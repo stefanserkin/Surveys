@@ -14,6 +14,9 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "58.0",
   "packageAliases": {
-    "SerkinSolutions Surveys": "0HoDn000000bmwoKAA"
+    "SerkinSolutions Surveys": "0HoDn000000bmwoKAA",
+    "SerkinSolutions Surveys@0.1.0-1": "04tDn000000B2I0IAK",
+    "SerkinSolutions Surveys@0.1.0-2": "04tDn000000B2I5IAK",
+    "SerkinSolutions Surveys@0.1.0-3": "04tDn000000B2IAIA0"
   }
 }
