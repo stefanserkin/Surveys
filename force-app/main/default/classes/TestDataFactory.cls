@@ -1,3 +1,4 @@
+@IsTest
 public class TestDataFactory {
 
     private static List<String> cachedQuestionDataTypes;
@@ -7,6 +8,41 @@ public class TestDataFactory {
      ******************************/
     private static final String SURVEY_NAME_BASE = 'Test Survey';
     private static final String SURVEY_QUESTION_BASE = 'Who what when where why';
+
+
+    /******************************
+     * Contacts
+     ******************************/
+
+    /******************************
+     * Get contact sobjects
+     * @param Integer numberOfRecords - Number of sobjects to create
+     * @param Boolean doCommit - Set to true to save records before returning to caller
+     * @return Contact[] Collection of contacts
+     ******************************/
+    public static List<Contact> createContacts(
+        Integer numberOfRecords,
+        Boolean doCommit
+    ) {
+        List<Contact> lstContacts = new List<Contact>();
+        for (Integer i = 0; i < numberOfRecords; i++) {
+            lstContacts.add(
+                new Contact(
+                    FirstName = 'Test' + String.valueOf(i),
+                    LastName = 'Tester'
+                )
+            );
+        }
+        if (doCommit) {
+            lstContacts = commitRecords(lstContacts);
+        }
+        return lstContacts;
+    }
+
+
+    /******************************
+     * Surveys
+     ******************************/
     
     /******************************
      * Get survey sobjects
@@ -29,6 +65,11 @@ public class TestDataFactory {
         }
         return lstSurveys;
     }
+
+
+    /******************************
+     * Survey Questions
+     ******************************/
 
     /******************************
      * Get survey question sobjects
@@ -74,6 +115,70 @@ public class TestDataFactory {
         }
         return cachedQuestionDataTypes;
     }
+
+
+    /******************************
+     * Users
+     ******************************/
+
+     /******************************
+     * Get a test user
+     * @param String userType - Valid values are 'Admin' and 'Reviewer'
+     * @return User
+     ******************************/
+    public static User createUser(
+        String userType
+    ) {
+        String profileName;
+        String permSetName;
+        if (userType == 'Admin') {
+            profileName = 'System Administrator';
+            permSetName = 'Surveys_Admin';
+        } else if (userType == 'Reviewer') {
+            profileName = 'Standard User';
+            permSetName = 'Surveys_Reviewer';
+        }
+
+        UserRole uRole = new UserRole(DeveloperName = 'TestCustomRole', Name = 'Test Custom Role');
+        insert uRole;
+        
+        Profile profile = [SELECT Id FROM Profile WHERE Name = :profileName LIMIT 1];
+        User u = getDefaultUser(uRole.Id, profile.Id, 'Test', 'User');
+        insert u;
+
+        PermissionSet permSet = [SELECT Id FROM PermissionSet WHERE Name = :permSetName LIMIT 1];
+        insert new PermissionSetAssignment(AssigneeId = u.Id, PermissionSetId = permSet.Id);
+
+        return u;
+    }
+
+    private static User getDefaultUser(
+        Id roleId, 
+        Id profileId,
+        String firstName,
+        String lastName
+    ) {
+        String orgId      = UserInfo.getOrganizationId();
+        String dateString = String.valueof(Datetime.now()).replace(' ', '').replace(':', '').replace('-', '');
+        Integer randomInt = Integer.valueOf(Math.rint(Math.random() * 1000000));
+        String uniqueName = orgId + dateString + randomInt;
+
+        User u = new User();
+        u.IsActive          = true;
+        u.TimeZoneSidKey    = UserInfo.getTimeZone().toString();
+        u.LocaleSidKey      = UserInfo.getLocale();
+        u.LanguageLocaleKey = UserInfo.getLocale();
+        u.EmailEncodingKey  = 'ISO-8859-1';
+        u.Username          = uniqueName + '@test' + orgId + '.org';
+        u.Email             = uniqueName + '@test' + orgId + '.org';
+        u.FirstName         = firstName;
+        u.LastName          = lastName;
+        u.Alias             = uniqueName.substring(18, 23);
+        u.UserRoleId        = roleId;
+        u.ProfileId         = profileId;
+        return u;
+    }
+
 
     /******************************
      * DML

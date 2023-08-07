@@ -160,7 +160,10 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Surveys</pluralLabel>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Paginated__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Max_Questions_Per_Page__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

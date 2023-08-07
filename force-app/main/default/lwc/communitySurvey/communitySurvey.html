@@ -10,12 +10,13 @@
         <!-- QUESTIONS -->
         <template if:true={currentPageAnswers}>
             <template for:each={currentPageAnswers} for:item="ans">
-                <div key={ans.Survey_Question__c} class="slds-var-m-around_medium">
+                <div key={ans.qId} class="slds-var-m-around_medium">
                     <lightning-input type={ans.dataType}
-                                     name={ans.Survey_Question__c} 
+                                     name={ans.qId} 
                                      label={ans.question} 
                                      value={ans.answer} 
                                      field-level-help={ans.helpText} 
+                                     data-qid={ans.qId}
                                      onchange={handleInputChange}
                     ></lightning-input>
                 </div>

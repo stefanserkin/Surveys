@@ -9,25 +9,21 @@ public with sharing class CommunitySurveyController {
     public static List<Survey_Answer__c> initializeSurvey(
         String recordId
     ) {
-        try {
-            List<Survey_Answer__c> lstAs = new List<Survey_Answer__c>();
+        List<Survey_Answer__c> lstAs = new List<Survey_Answer__c>();
 
-            List<Survey_Question__c> lstQs = getSurveyQuestions(recordId);
-            for (Survey_Question__c q : lstQs) {
-                lstAs.add(
-                    new Survey_Answer__c(
-                        Survey_Question__c = q.Id,
-                        Question__c = q.Question__c,
-                        Data_Type__c = q.Data_Type__c,
-                        Answer__c = ''
-                    )
-                );
-            }
-
-            return lstAs;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+        List<Survey_Question__c> lstQs = getSurveyQuestions(recordId);
+        for (Survey_Question__c q : lstQs) {
+            lstAs.add(
+                new Survey_Answer__c(
+                    Survey_Question__c = q.Id,
+                    Question__c = q.Question__c,
+                    Data_Type__c = q.Data_Type__c,
+                    Answer__c = ''
+                )
+            );
         }
+
+        return lstAs;
     }
 
     /************************************************************************
@@ -60,7 +56,11 @@ public with sharing class CommunitySurveyController {
             // TODO - Perform validation
 
             // Update application answers
-            insert lstAnswers;
+            Database.insert(
+                lstAnswers,
+                false,
+                AccessLevel.USER_MODE
+            );
             return sr.Id;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

@@ -134,6 +134,7 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
 
             let i = 0;
             rows.forEach(ans => {
+                ans.qId = ans[this.fields.answerSurveyQuestion.fieldApiName];
                 ans.question = ans[this.fields.answerQuestion.fieldApiName];
                 ans.answer = this.getInitialFieldValue(i);
                 ans.dataType = this.setDataType(ans[this.fields.answerDataType.fieldApiName]);
@@ -159,7 +160,6 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
      * @param obj answer 
      * @return void
      */
-
     setDataType(fieldDataType) {
         let dataType = 'Text';
         switch (fieldDataType) {
@@ -181,11 +181,10 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
      *********************************/
 
     handleInputChange(event) {
-        const { name, value } = event.target;
-        const answerId = name.substring(name.indexOf('_') + 1);
+        const questionId = event.target.dataset.qid;
         const updatedAnswers = this.answers.map((answer) => {
-            if (answer.Id === answerId) {
-                return { ...answer, Answer__c: value };
+            if (answer[this.fields.answerSurveyQuestion.fieldApiName] === questionId) {
+                return { ...answer, answer: String( event.target.value ) };
             }
             return answer;
         });
@@ -193,25 +192,31 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
     }
 
 
+    /**
+     * Set data type for each answer. Maps picklist value to supported
+     * value for lightning-input's 'type' attribute
+     * @param obj answer 
+     * @return void
+     */
     handleSubmitSurvey() {
 
         const records = this.answers.map((ans) => {
             let answer = {};
+            answer.sobjectType = SURVEY_ANSWER_OBJECT.objectApiName;
             answer[this.fields.answerSurveyQuestion.fieldApiName] = ans[this.fields.answerSurveyQuestion.fieldApiName];
-            answer[this.fields.answerQuestion.fieldApiName] = ans.question;
-            answer[this.fields.answerAnswer.fieldApiName] = ans.answer;
+            answer[this.fields.answerQuestion.fieldApiName] = String( ans.question );
+            answer[this.fields.answerAnswer.fieldApiName] = String( ans.answer );
             answer[this.fields.answerDataType.fieldApiName] = ans[this.fields.answerDataType.fieldApiName];
-            console.log(JSON.stringify(answer));
-            
             return answer;
         });
-        console.log(JSON.stringify(records));
         
         submitSurvey({ 
             recordId: this.recordId, 
-            contactId: this.cId, 
+            contactId: this.contactId, 
             answers: records
-        }).then(() => {
+        }).then((result) => {
+            const surveyResponseId = result;
+            console.log('::::: surveyResponseId ', surveyResponseId);
             const event = new ShowToastEvent({
                 title: 'Success',
                 message: 'Thank you for your submission, but it is lousy. We have thrown it in the trash.',
