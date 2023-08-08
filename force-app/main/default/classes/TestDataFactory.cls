@@ -57,7 +57,12 @@ public class TestDataFactory {
         List<Survey__c> lstSurveys = new List<Survey__c>();
         for (Integer i = 0; i < numberOfRecords; i++) {
             lstSurveys.add(
-                new Survey__c(Name = SURVEY_NAME_BASE + ' ' + String.valueOf(i))
+                new Survey__c(
+                    Name = SURVEY_NAME_BASE + ' ' + String.valueOf(i),
+                    Paginated__c = true,
+                    Max_Questions_Per_Page__c = 3,
+                    Thank_You_Message__c = 'Thank you!'
+                )
             );
         }
         if (doCommit) {
@@ -94,7 +99,8 @@ public class TestDataFactory {
                 new Survey_Question__c(
                     Survey__c = surveyId,
                     Data_Type__c = dataType,
-                    Question__c = SURVEY_QUESTION_BASE + ' ' + String.valueOf(i) + '?'
+                    Question__c = SURVEY_QUESTION_BASE + ' ' + String.valueOf(i) + '?',
+                    Help_Text__c = 'Some helpful info'
                 )
             );
         }

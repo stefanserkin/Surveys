@@ -1,38 +1,46 @@
 <template>
-    <lightning-card title="Surveys!" icon-name="standard:survey">
-        
-        <div class="slds-var-m-around_medium">
-            <p>-- DEBUG --</p>
-            <p>Record Id: {recordId}</p>
-            <p>Contact Id: {contactId}</p>
+    <lightning-card icon-name="standard:survey">
+        <h1 slot="title">{surveyTitle}</h1>
+
+        <!-- SURVEY -->
+        <div if:false={isSubmitted}>
+            <template if:true={currentPageQuestions}>
+                <template for:each={currentPageQuestions} for:item="q">
+                    <div key={q.id} class="slds-var-m-around_medium">
+                        <lightning-input type={q.dataType}
+                                        name={q.id}
+                                        label={q.question}
+                                        value={q.answer}
+                                        data-qid={q.id}
+                                        field-level-help={q.helpText}
+                                        onchange={handleInputChange}
+                                        required={q.isRequired}
+                                        if:false={q.isHidden}
+                        ></lightning-input>
+                    </div>
+                </template>
+            </template>
+            <!-- NO QUESTIONS TO DISPLAY -->
+            <template if:false={currentPageQuestions}>
+                <p>{noQuestionsMessage}</p>
+            </template>
+            <!-- FOOTER -->
+            <div class="slds-var-m-around_medium">
+                <lightning-button-group>
+                    <lightning-button label="Previous" variant="neutral" onclick={previousPage} disabled={disablePreviousButton} if:true={isMultiplePages}></lightning-button>
+                    <lightning-button label="Next" variant="neutral" onclick={nextPage} disabled={disableNextButton} if:true={isMultiplePages}></lightning-button>
+                </lightning-button-group>
+                <lightning-button variant="brand" label="Submit" onclick={handleSubmitSurvey} class="slds-var-m-left_medium"></lightning-button>
+            </div>
         </div>
 
-        <!-- QUESTIONS -->
-        <template if:true={currentPageAnswers}>
-            <template for:each={currentPageAnswers} for:item="ans">
-                <div key={ans.qId} class="slds-var-m-around_medium">
-                    <lightning-input type={ans.dataType}
-                                     name={ans.qId} 
-                                     label={ans.question} 
-                                     value={ans.answer} 
-                                     field-level-help={ans.helpText} 
-                                     data-qid={ans.qId}
-                                     onchange={handleInputChange}
-                    ></lightning-input>
-                </div>
-            </template>
-        </template>
-
-        <template if:false={currentPageAnswers}>
-            <p>{noQuestionsMessage}</p>
-        </template>
-
-        <div class="slds-var-m-around_medium">
-            <lightning-button-group>
-                <lightning-button label="Previous" variant="neutral" onclick={previousPage} disabled={disablePreviousButton}></lightning-button>
-                <lightning-button label="Next" variant="neutral" onclick={nextPage} disabled={disableNextButton}></lightning-button>
-            </lightning-button-group>
-            <lightning-button variant="brand" label="Submit" onclick={handleSubmitSurvey} class="slds-var-m-left_medium"></lightning-button>
+        <!-- THANK YOU PAGE -->
+        <div if:true={isSubmitted}>
+            <p class="slds-var-p-around_large">
+                <lightning-formatted-rich-text
+                    value={thankYouMessage}
+                ></lightning-formatted-rich-text>
+            </p>
         </div>
 
     </lightning-card>

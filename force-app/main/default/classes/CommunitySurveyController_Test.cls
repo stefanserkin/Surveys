@@ -39,17 +39,17 @@ private class CommunitySurveyController_Test {
               FROM Survey__c 
              LIMIT 1
         ];
-        List<Survey_Answer__c> lstAnswers;
+        List<CommunitySurveyController.SurveyQuestionWrapper> lstWrappers;
         Test.startTest();
         System.runAs(adminUser) {
-            lstAnswers = CommunitySurveyController.initializeSurvey(
+            lstWrappers = CommunitySurveyController.initializeSurvey(
                 survey.Id
             );
         }
         Test.stopTest();
         Assert.areEqual(
             survey.Survey_Questions__r.size(), 
-            lstAnswers.size(), 
+            lstWrappers.size(), 
             'Should have received an answer for every question'
         );
     }
@@ -76,12 +76,21 @@ private class CommunitySurveyController_Test {
 
         Test.startTest();
         System.runAs(adminUser) {
-            List<Survey_Answer__c> lstAnswers = CommunitySurveyController.initializeSurvey(
+            List<Survey_Answer__c> lstAnswers = new List<Survey_Answer__c>();
+            List<CommunitySurveyController.SurveyQuestionWrapper> lstWrappers;
+            lstWrappers = CommunitySurveyController.initializeSurvey(
                 survey.Id
             );
 
-            for (Survey_Answer__c ans : lstAnswers) {
-                ans.Answer__c = 'Test Answer';
+            for (CommunitySurveyController.SurveyQuestionWrapper q : lstWrappers) {
+                lstAnswers.add(
+                    new Survey_Answer__c(
+                        Survey_Question__c = q.id,
+                        Question__c = q.question,
+                        Data_Type__c = q.dataType,
+                        Answer__c = 'Test Answer'
+                    )
+                );
             }
         
             surveyResponseId = CommunitySurveyController.submitSurvey(

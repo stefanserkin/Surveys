@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Thank_You_Message__c</fullName>
+    <description>The message to display to users after a survey is submitted</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The message to display to users after a survey is submitted</inlineHelpText>
+    <label>Thank You Message</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>Html</type>
+    <visibleLines>25</visibleLines>
+</CustomField>
