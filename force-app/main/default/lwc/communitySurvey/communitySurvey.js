@@ -50,6 +50,7 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
     maxQuestionsPerPage = 5;
     currentPage = 1;
     currentPageQuestions;
+    isMultiplePages = false;
 
     get totalPages() {
         let result = 0;
@@ -57,10 +58,6 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
             result = Math.ceil(this.questions.length / this.maxQuestionsPerPage);
         }
         return result;
-    }
-
-    get isMultiplePages() {
-        return this.totalPages && this.totalPages.length > 1;
     }
 
     get noQuestionsMessage() {
@@ -257,6 +254,7 @@ export default class CommunitySurvey extends NavigationMixin(LightningElement) {
         const startIndex = (this.currentPage - 1) * this.maxQuestionsPerPage;
         const endIndex = startIndex + this.maxQuestionsPerPage;
         this.currentPageQuestions = this.questions.slice(startIndex, endIndex);
+        this.isMultiplePages = this.currentPageQuestions.length < this.questions.length;
     }
 
     get disablePreviousButton() {

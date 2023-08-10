@@ -11,14 +11,19 @@ public with sharing class CommunitySurveyController {
     ) {
         List<SurveyQuestionWrapper> lstWrappers = new List<SurveyQuestionWrapper>();
         for (Survey_Question__c q : getSurveyQuestions(recordId)) {
+            String lightningInputType = DataTypesUtil.getLightningInputType(q.Data_Type__c) != null
+                ? DataTypesUtil.getLightningInputType(q.Data_Type__c)
+                : q.Data_Type__c;
             SurveyQuestionWrapper qWrap = new SurveyQuestionWrapper();
             qWrap.id = q.Id;
             qWrap.sortOrder = q.Sort_Order__c;
-            qWrap.dataType = DataTypesUtil.getLightningInputType(q.Data_Type__c);
+            qWrap.dataType = lightningInputType;
             qWrap.question = q.Question__c;
             qWrap.helpText = q.Help_Text__c;
             qWrap.isRequired = q.Required__c;
             qWrap.isHidden = q.Hidden__c;
+            qWrap.isStandardInput = lightningInputType != 'Text Area' ? true : false;
+            qWrap.isTextArea = false;
             lstWrappers.add(qWrap);
         }
         return lstWrappers;
@@ -105,6 +110,8 @@ public with sharing class CommunitySurveyController {
         public Boolean isRequired {get;set;}
         @AuraEnabled
         public Boolean isHidden {get;set;}
+        @AuraEnabled
+        public Boolean isStandardInput {get;set;}
     }
 
 }

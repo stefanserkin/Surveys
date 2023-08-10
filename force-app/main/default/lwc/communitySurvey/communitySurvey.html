@@ -7,16 +7,24 @@
             <template if:true={currentPageQuestions}>
                 <template for:each={currentPageQuestions} for:item="q">
                     <div key={q.id} class="slds-var-m-around_medium">
-                        <lightning-input type={q.dataType}
-                                        name={q.id}
-                                        label={q.question}
-                                        value={q.answer}
-                                        data-qid={q.id}
-                                        field-level-help={q.helpText}
-                                        onchange={handleInputChange}
-                                        required={q.isRequired}
-                                        if:false={q.isHidden}
-                        ></lightning-input>
+
+                        <template if:true={q.isStandardInput}>
+                            <lightning-input type={q.dataType}
+                                             name={q.id}
+                                             label={q.question}
+                                             value={q.answer}
+                                             data-qid={q.id}
+                                             field-level-help={q.helpText}
+                                             onchange={handleInputChange}
+                                             required={q.isRequired}
+                                             if:false={q.isHidden}
+                            ></lightning-input>
+                        </template>
+
+                        <template if:true={q.isTextArea}>
+                            <lightning-textarea name="input1" label="Enter some text" ></lightning-textarea>
+                        </template>
+                        
                     </div>
                 </template>
             </template>
@@ -26,9 +34,9 @@
             </template>
             <!-- FOOTER -->
             <div class="slds-var-m-around_medium">
-                <lightning-button-group>
-                    <lightning-button label="Previous" variant="neutral" onclick={previousPage} disabled={disablePreviousButton} if:true={isMultiplePages}></lightning-button>
-                    <lightning-button label="Next" variant="neutral" onclick={nextPage} disabled={disableNextButton} if:true={isMultiplePages}></lightning-button>
+                <lightning-button-group if:true={isMultiplePages}>
+                    <lightning-button label="Previous" variant="neutral" onclick={previousPage} disabled={disablePreviousButton}></lightning-button>
+                    <lightning-button label="Next" variant="neutral" onclick={nextPage} disabled={disableNextButton}></lightning-button>
                 </lightning-button-group>
                 <lightning-button variant="brand" label="Submit" onclick={handleSubmitSurvey} class="slds-var-m-left_medium"></lightning-button>
             </div>
